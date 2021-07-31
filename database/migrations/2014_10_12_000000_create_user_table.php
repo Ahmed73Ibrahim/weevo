@@ -9,7 +9,7 @@ class CreateUserTable extends Migration{
     public function up(){
 
         Schema::create('Users', function (Blueprint $table){
-            $table->engine = 'InnoDB';
+           // $table->engine = 'InnoDB';
             $table->id();
             $table->string('first_name',30);
             $table->string('last_name',30);
