@@ -6,38 +6,32 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateUserTable extends Migration{
 
+    //public $tableName="Users";
+
     public function up(){
 
+         
         Schema::create('Users', function (Blueprint $table){
             $table->engine = 'InnoDB';
             $table->id();
-            $table->string('first_name',30);
-            $table->string('last_name',30);
+            $table->string('name',100);
             $table->string('phone')->unique();
-            $table->integer('gender');
-            $table->string('email')->unique();
-            $table->string('password');
+            $table->string('pass')->index();
+            $table->boolean('type'); # person = 1 , company = 2 
+            $table->string('im_path')->nullable();    #profile img path
+            $table->string('c_rec')->nullable();  #commrecal record [ if commpany ]
 
-            $table->string('photo');
-            $table->string('nid_back');
-            $table->string('nid_front');
+            $table->unsignedBigInteger('city_id')->nullable(); 
+            $table->integer('gover_id')->nullable(); 
 
-            $table->string('delivery_method');
-            $table->string('vehicle_number');
-            $table->string('vehicle_color');
-            $table->string('vehicle_model');
-
-            $table->string('state_id');
-            $table->string('city_id');
-            $table->string('street');
-            $table->string('building_number');
-            $table->string('floor');
-            $table->string('apartment');
+            $table->foreign('city_id')->references('id')->on('Citys');  
+            $table->foreign('gover_id')->references('gover_id')->on('Citys');  
 
             $table->rememberToken();
             $table->timestamps();
-        }); }
 
-     public function down(){
-       Schema::dropIfExists($this->tableName);}
+        });
+    }
+     public function down() {  Schema::dropIfExists($this->tableName);  }
+    
 }

@@ -1,6 +1,6 @@
 <?php
 /********************************************************/
-use App\Http\Controllers\AUTH_USERS\Add_user;
+use App\Http\Controllers\AUTH_USERS\Signup;
 use App\Http\Controllers\AUTH_USERS\Change_pass;
 use App\Http\Controllers\AUTH_USERS\Login;
 use App\Http\Controllers\AUTH_USERS\Reset_pass;
@@ -47,17 +47,21 @@ use App\Http\Middleware\type_admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+// // /////////////*******************************************************
+// // ********************** my rules : 
+// Route::post('smallwords', capiatacl::class . '@capiatacl');
+
+// ************** */
+
 Route::middleware('auth:api')->get('/user', function (Request $request)
-{
-    return $request->user();
-});
+ {  return $request->user(); });
 
 Route::group(['middleware' => 'api', 'prefix' => 'auth'],function ($router)
  {
 
     Route::post('list_database', List_database::class . '@list_database');
 
-    Route::post('add_user', Add_user::class . '@add_user');
+    Route::post('signup', Signup::class . '@Signup');
     Route::post('login', Login::class . '@login');
     Route::post('change_pass', Change_pass::class . '@change_pass');
     Route::post('sendresetpasswordemail',Reset_pass::class . '@sendresetpasswordemail');
