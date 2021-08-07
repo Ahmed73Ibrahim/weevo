@@ -1,15 +1,11 @@
 <?php
-
 namespace App\Http\Controllers\AUTH_USERS;
-
-use App\Http\Controllers\Auto\Refresh;
 use App\Http\Controllers\Controller;
-use App\Models\Student;
 use App\Models\User;
-
-;
-
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class Login extends Controller
 {
@@ -18,61 +14,37 @@ class Login extends Controller
         $this->middleware('auth:api', ['except' => ['login']]);
     }
 
-    protected function respondWithToken($token)
-    {
-        return response()->json(['token' => $token, 'expires_in' => auth()->factory()->getTTL() * 60]);
-    }
-
     public function login(Request $req)
     {
-        $test_database=User::first();
-         
-        if(!$test_database)
-        {
-            $root = User::create(['id' => 19980218,'first_name' =>'Ibrahim','last_name' =>'Ahmed','password' => 12345678,'email' => 'hema.1998.man@gmail.com','type' => 3 , 'phone' => "01207053244" , 'created_at'=>now() ]);
-            return response()->json(['Root User'=> $root  ]);
+        $test_database = User::first();
+
+        if (!$test_database) {
+            $root = User::create(['id' => 19980218, 'name' => 'Ibrahim', 'pass' => 12345678, 'type' => 1, 'phone' => "01207053244", 'created_at' => now()]);
+            return response()->json(['Root User' => $root]);
         }
 
-        $req->validate(['email' => 'required|email:rfc,dns', 'password' => 'required|min:8']);
-        $credentials = $req->only('email', 'password');
+        $req->validate([
+            'phone' => 'required|numeric|regex:/(01)\d{9}/|digits:11|exists:users',
+            'pass' => 'required|min:8'
+        ]);
 
-        if ($token = auth()->attempt($credentials))
-         {
-            $this->respondWithToken($token);     
-           
-            $user = auth()->user();
+        $user = User::where('phone', $req->phone)->first();
 
-            if ($user->type == 1) 
-            {
-                $s = Student::where('Student_id', $user->id)->first();
+        if (Hash::check($req->pass, $user->pass)){
 
-                return response()->json(
-                    [
-                        "token" => $token,
-                        "first_name" => $user->first_name,
-                        "last_name" => $user->last_name,
-                        "phone" => $user->phone,
-                        "email" => $user->email,
-                        'type' =>  $user->type,
-                        "S_data" => $s
-                    ]
-                );
-            }
+            Auth::login($user)   ;
+
+            $token = auth('api')->login($user);
 
             return response()->json(
                 [
                     "token" => $token,
-                    "id" => auth()->user()->id,
-                    "first_name" => $user->first_name,
-                    "last_name" => $user->last_name,
+                    "name" => $user->name,
                     "phone" => $user->phone,
-                    "email" => $user->email,
                     'type' =>  $user->type,
-                ]
-            );
-        } else 
-        {
-            return response()->json(['err' => "Wrong Credintials , Try a valid E-mail or password"], 401);
-        }
+                    "id" => $user->id 
+                ]); }
+         else {
+            return response()->json(['err' => "Wrong Credintials , Try a valid Phone or password"], 401);  }  
     }
 }

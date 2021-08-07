@@ -11,24 +11,24 @@ class Change_pass extends Controller
        
     public function change_pass(Request $req)
     {
-        $req->validate(['password' => 'required|min:8',
+        $req->validate(['pass' => 'required|min:8',
                         'new_pass' => 'required|min:8|required_with:conifrm_new_pass|same:conifrm_new_pass']);
  
         $user = Auth()->user();
 
         if ($user) 
         {
-            $x = Hash::check($req->password, $user->password);
+            $x = Hash::check($req->pass, $user->pass);
 
-            if (!$x) { return response()->json(["err" => " password is wrong "], 400);}
+            if (!$x) { return response()->json(["err" => " pass is wrong "], 400);}
            
-            else if ($req->password == $req->new_pass)
+            else if ($req->pass == $req->new_pass)
              {
                 return response()->json(["err"=>"old pass = new pass"], 400);
              } 
              else
              {
-                User::where('id', $user->id)->update(array('password' => hash::make($req->new_pass)));
+                User::where('id', $user->id)->update(array('pass' => hash::make($req->new_pass)));
                 return response()->json(["success" => "Pass changed"], 200);
              }
         }}}

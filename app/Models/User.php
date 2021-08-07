@@ -13,7 +13,7 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable=[
         'name',
         'phone',
-   //     'pass',
+        'pass',
         'type',
         'img_path', 
         'c_rec', 
@@ -23,11 +23,6 @@ class User extends Authenticatable implements JWTSubject
         'created_at' /*,'updated_at'//'email_verified_at',*/];
 
     protected $hidden = ['pass','updated_at','created_at'];
-
-    public function setPasswordAttribute($password)
-    {
-        $this->attributes['password'] = bcrypt($password);
-    }
 
     // public function messages() { return $this->hasMany(Message::class); }
 

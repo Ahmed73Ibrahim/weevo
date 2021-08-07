@@ -26,7 +26,7 @@ class CreateUserTable extends Migration{
 
             $table->foreign('city_id')->references('id')->on('Citys');  
             $table->foreign('gover_id')->references('gover_id')->on('Citys');  
-
+            $table->string('api_token')->nullable();     
             $table->rememberToken();
             $table->timestamps();
 

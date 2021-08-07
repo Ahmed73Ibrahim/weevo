@@ -3,6 +3,7 @@ namespace App\Http\Controllers\AUTH_USERS;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Signup_req;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class Signup extends Controller
 {
@@ -16,9 +17,11 @@ class Signup extends Controller
              $c_rec=$req->c_rec;
              }
 
+
+
         $user = User::create([
             'name' => $req->name,
-            'pass' => $req->pass,
+            'pass' => Hash::make($req->pass),
             'phone' => $req->phone,
             'type' => $req->type,
             'c_req'=> $c_rec ,
