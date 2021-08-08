@@ -15,7 +15,8 @@ use App\Http\Controllers\Auto\Auto_enroll;
 use App\Http\Controllers\Auto\Refresh;
 
 /********************************************************/
-use App\Http\Controllers\Yellow\Course98;
+use App\Http\Controllers\Location\Map;
+
 use App\Http\Controllers\Yellow\Department98;
 use App\Http\Controllers\Yellow\Pre_req98;
 use App\Http\Controllers\Yellow\Section98;
@@ -71,11 +72,15 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'],function ($router)
     Route::post('me', AuthController::class . '@me');
     Route::post('deep_search',Deep_search::class.'@deep_search');
 
+
  });
 
-Route::group(['middleware' => type_admin::class, 'prefix' => '98'],function ($router)
+Route::group(['middleware' , 'prefix' => 'v1'],function ($router)
  {
-        Route::post('update_user', Update_user::class . '@update_user');
+        Route::get('list_gover', Map::class . '@list_gover');
+        Route::post('list_city', Map::class . '@list_city');
+
+        
         Route::post('del_user', Del_user::class . '@del_user');
         Route::post('del_student', Del_student::class . '@del_student');
         Route::post('update_student', Update_student::class . '@update_student');

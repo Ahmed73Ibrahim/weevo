@@ -24,8 +24,8 @@ class CreateUserTable extends Migration{
             $table->unsignedBigInteger('city_id')->nullable(); 
             $table->integer('gover_id')->nullable(); 
 
-            $table->foreign('city_id')->references('id')->on('Citys');  
-            $table->foreign('gover_id')->references('gover_id')->on('Citys');  
+            $table->foreign('city_id')->references('id')->on('Cities');  
+            $table->foreign('gover_id')->references('gover_id')->on('Cities');  
             $table->string('api_token')->nullable();     
             $table->rememberToken();
             $table->timestamps();
