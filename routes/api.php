@@ -15,6 +15,7 @@ use App\Http\Controllers\AUTH_USERS\Del_user;
 use App\Http\Controllers\Auto\Auto_cancel;
 use App\Http\Controllers\Auto\Auto_enroll;
 use App\Http\Controllers\Auto\Refresh;
+use App\Http\Controllers\Car\Car_Controller;
 
 /********************************************************/
 use App\Http\Controllers\Location\Map;
@@ -82,7 +83,9 @@ Route::group(['middleware' , 'prefix' => 'v1'],function ($router)
         Route::get('list_gover', Map::class . '@list_gover');
         Route::post('list_city', Map::class . '@list_city');
         Route::post('add_ads', Ad_Controller::class . '@store');
+        Route::get('list_car', Car_Controller::class . '@list_car');
 
+        
         
         Route::post('del_user', Del_user::class . '@del_user');
         Route::post('del_student', Del_student::class . '@del_student');
