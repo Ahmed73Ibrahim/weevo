@@ -1,5 +1,7 @@
 <?php
 /********************************************************/
+
+use App\Http\Controllers\Ad\Ad_Controller;
 use App\Http\Controllers\AUTH_USERS\Signup;
 use App\Http\Controllers\AUTH_USERS\Change_pass;
 use App\Http\Controllers\AUTH_USERS\Login;
@@ -79,11 +81,11 @@ Route::group(['middleware' , 'prefix' => 'v1'],function ($router)
  {
         Route::get('list_gover', Map::class . '@list_gover');
         Route::post('list_city', Map::class . '@list_city');
+        Route::post('add_ads', Ad_Controller::class . '@store');
 
         
         Route::post('del_user', Del_user::class . '@del_user');
         Route::post('del_student', Del_student::class . '@del_student');
-        Route::post('update_student', Update_student::class . '@update_student');
  });
 
 
